@@ -12,6 +12,8 @@ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 
 $color: lightgray;
 
+@import '../../node_modules/bootstrap/scss/bootstrap';
+
 body{
     background-color: $color;
 }
