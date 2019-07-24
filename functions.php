@@ -30,4 +30,74 @@ require_once get_template_directory() . '/class-wp-bootstrap-navwalker.php';
 add_theme_support( 'post-thumbnails' );
 
 
-add_theme_support( 'custom-background' );
+function register_housing(){
+    register_post_type('housing', [
+        'label' => 'logements',
+        'labels' => [
+            'name' => 'Logements',
+            'singular_name' => 'Logement',
+            'all_items' => 'Tous les logements',
+            'add_new_item' => 'Ajouter un logement',
+            'edit_item' => 'Éditer le logement',
+            'new_item' => 'Nouveau logement',
+            'view_item' => 'Voir le logement',
+            'search_items' => 'Rechercher parmi les logements',
+            'not_found' => 'Pas de logement trouvé',
+            'not_found_in_trash' => 'Pas de logement dans la corbeille'
+        ],
+        'public' => true,
+        'supports' => ['title', 'editor', 'author', 'thumbnail'],
+        'has_archive' => true,
+        'show_in_rest' => true, // Si on veut activer Gutenberg;
+    ]);
+}
+//Ajout des annonces
+add_action ('init','register_housing');
+
+
+//Ajouter des types
+function registerTypes(){
+    register_taxonomy('types', 'housing', [
+    'label' => 'Types',
+    'labels' => [
+        'name' => 'Types',
+        'singular_name' => 'Type',
+        'all_items' => 'Tous les types',
+        'edit_item' => 'Éditer le type',
+        'view_item' => 'Voir le type',
+        'update_item' => 'Mettre à jour le type',
+        'add_new_item' => 'Ajouter un type',
+        'new_item_name' => 'Nouveau type',
+        'search_items' => 'Rechercher parmi les types',
+        'popular_items' => 'Types les plus utilisés'
+    ],
+    'hierarchical' => true,
+    'show_in_rest' => true, // Pour Gutenberg
+]);
+}
+//Ajout des annonces
+add_action ('init','registerTypes');
+
+
+//Ajouter des villes
+function registerVilles() {
+register_taxonomy('villes', 'housing', [
+    'label' => 'Villes',
+    'labels' => [
+        'name' => 'Villes',
+        'singular_name' => 'Ville',
+        'all_items' => 'Tous les villes',
+        'edit_item' => 'Éditer le ville',
+        'view_item' => 'Voir le ville',
+        'update_item' => 'Mettre à jour le ville',
+        'add_new_item' => 'Ajouter un ville',
+        'new_item_name' => 'Nouveau ville',
+        'search_items' => 'Rechercher parmi les villes',
+        'popular_items' => 'Villes les plus utilisés'
+    ],
+    'hierarchical' => true,
+    'show_in_rest' => true, // Pour Gutenberg
+]);
+}
+//Ajout des annonces
+add_action ('init','registerVilles');

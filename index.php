@@ -22,8 +22,11 @@ get_header(); ?>
                                     ?>
                                     <div class="card-body">
                                         <h2 class="card-title">
-                                            <?php the_title(); ?>
+                                            <?php the_title(); ?>   
                                         </h2>
+                                        <p>Surface: <?php echo get_post_meta($post->ID, 'surface', true); ?> m²</p>
+                                        <p>Prix: <?php echo get_post_meta($post->ID, 'prix', true); ?> &euro;</p>
+
                                     </div>
                                     <div class="card-footer">
                                     <?php echo get_the_date(); ?>
