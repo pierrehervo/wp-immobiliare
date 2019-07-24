@@ -17,3 +17,16 @@ $color: lightgray;
 body{
     background-color: $color;
 }
+.card-link{
+    color: black;
+    text-decoration: none;
+
+
+    .card{
+        transition: 0.5s;
+    }
+
+    &:hover .card{
+        transform: scale(1.2);
+    }
+}
