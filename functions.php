@@ -8,6 +8,7 @@ function immobiliare_enqueue_styles(){
     wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.3.1.slim.min.js',[],false,true);
     wp_enqueue_script('popper.js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',[],false,true);
     wp_enqueue_script('bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js',[],false,true);
+    wp_enqueue_script('app', get_template_directory_uri() . '/assets/js/app.js',['jquery'],false,true);
 
 }
 
@@ -56,9 +57,9 @@ add_action ('init','register_housing');
 
 
 //Ajouter des types
-function registerTypes(){
-    register_taxonomy('types', 'housing', [
-    'label' => 'Types',
+function registerSize(){
+    register_taxonomy('size', 'housing', [
+    'label' => 'size',
     'labels' => [
         'name' => 'Types',
         'singular_name' => 'Type',
@@ -76,7 +77,7 @@ function registerTypes(){
 ]);
 }
 //Ajout des annonces
-add_action ('init','registerTypes');
+add_action ('init','registerSize');
 
 
 //Ajouter des villes
@@ -101,3 +102,57 @@ register_taxonomy('villes', 'housing', [
 }
 //Ajout des annonces
 add_action ('init','registerVilles');
+
+
+/*CREATE TABLE `wordpress`.`gruik4contact` ( `id` INT UNSIGNED NOT NULL AUTO_INCREMENT , `reference` VARCHAR(255) NOT NULL , `housing_id` INT NOT NULL , `lastname` VARCHAR(255) NOT NULL , `firstname` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;*/
+
+
+//Ce hook est executé au moment ou le back office WP est chargé
+add_action( 'admin_menu', 'contact_menu' );
+
+
+function contact_menu() {
+	add_menu_page( 'Demandes de contact', 'demande de contact', 'manage_options', 'demande-de-contact', 'contact_page' );
+}
+
+
+function contact_page() {
+	if ( !current_user_can( 'manage_options' ) )  {
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	} ?>
+            
+                <h1>Demandes de contact</h1>
+                
+                    <?php
+                        global $wpdb;
+                        $contacts = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}contact");?> 
+
+                    
+                <table class="wp-list-table widefat fixed striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Reference</th>
+                            <th>Annonce</th>
+                            <th>Nom</th>
+                            <th>Prenom</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <?php foreach($contacts as $contact): ?>
+                        <tr>
+                            <td><?= $contact->id ?></td>
+                            <td><?= $contact->reference ?></td>
+                            <td><a target="_blank" href="<?php the_permalink($contact->housing_id) ?>">Voir l'annonce</a></td>
+                            <td><?= $contact->lastname ?></td>
+                            <td><?= $contact->firstname ?></td>
+                            <td><?= $contact->message ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+
+
+
+                
+           
+<?php }
